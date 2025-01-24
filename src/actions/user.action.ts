@@ -49,8 +49,22 @@ export async function getUserByClerkId(clerkId: string) {
           followers: true,
           following: true,
           posts: true,
-        }
-      }
-    }
+        },
+      },
+    },
   });
+}
+
+export async function getDbUserId() {
+  const { userId: clerkId } = await auth();
+  if (!clerkId) {
+    throw new Error("User not authenticated");
+  }
+
+  const user = await getUserByClerkId(clerkId);
+  if (!user) {
+    throw new Error("User not found in the database");
+  }
+
+  return user.id;
 }
