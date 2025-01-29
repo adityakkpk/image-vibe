@@ -8,7 +8,7 @@ export async function createPost(content: string, image: string) {
   try {
     const userId = await getDbUserId();
 
-    if (!userId) return {success: false, message: "User not found"};
+    if (!userId) return { success: false, message: "User not found" };
 
     const post = await prisma.post.create({
       data: {
@@ -35,6 +35,7 @@ export async function getPosts() {
       include: {
         author: {
           select: {
+            id: true,
             username: true,
             image: true,
             name: true,
@@ -127,10 +128,84 @@ export async function toggleLike(postId: string) {
       ]);
     }
 
-    revalidatePath("/")
-    return {success: true}
+    revalidatePath("/");
+    return { success: true };
   } catch (error) {
-    console.log("Failed to toggle like", error)
-  return {success: false, message: "Failed to toggle like" };
+    console.log("Failed to toggle like", error);
+    return { success: false, error: "Failed to toggle like" };
+  }
+}
+
+export async function createComment(postId: string, content: string) {
+  try {
+    const userId = await getDbUserId();
+    if (!userId) return { success: false, message: "User not found" };
+    if (!content) throw new Error("Content cannot be empty");
+
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      select: { authorId: true },
+    });
+    if (!post) throw new Error("Post not found");
+
+    // Create comment and notification in a transaction
+    const [comment] = await prisma.$transaction(async (tx) => {
+      // Create Comment first
+      const newComment = await tx.comment.create({
+        data: {
+          content,
+          authorId: userId,
+          postId,
+        },
+      });
+
+      // Create notification if commenting on someone else's post
+      if (post.authorId !== userId) {
+        await tx.notification.create({
+          data: {
+            type: "COMMENT",
+            userId: post.authorId,
+            creatorId: userId,
+            postId,
+            commentId: newComment.id,
+          },
+        });
+      }
+
+      return [newComment];
+    });
+
+    revalidatePath("/");
+
+    return { success: true, comment };
+  } catch (error) {
+    console.error("Failed to create Comment", error);
+    return { success: false, error: "Failed to create Comment" };
+  }
+}
+
+export async function deletePost(postId: string) {
+  try {
+    const userId = await getDbUserId();
+
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      select: { authorId: true },
+    });
+    if (!post) throw new Error("Post not found");
+
+    if (post.authorId !== userId)
+      throw new Error("Unauthorized - You are not the author of this post");
+
+    await prisma.post.delete({
+      where: { id: postId },
+    });
+
+    revalidatePath("/");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to delete post", error);
+    return { success: false, error: "Failed to delete post" };
   }
 }
