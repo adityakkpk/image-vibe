@@ -63,6 +63,7 @@ const PostCard = ({
       setOptimisticLikes((prev) => prev + (hasLiked ? -1 : 1));
       await toggleLike(post.id);
     } catch (error) {
+      console.error(error);
       setOptimisticLikes(post._count.likes);
       setHasLiked(post.likes.some((like) => like.userId === dbUserId));
     } finally {
@@ -81,6 +82,7 @@ const PostCard = ({
         setNewComment("");
       }
     } catch (error) {
+      console.error(error);
       toast.error("Failed to add comment");
     } finally {
       setIsCommenting(false);
@@ -101,6 +103,7 @@ const PostCard = ({
         throw new Error(result.error);
       }
     } catch (error) {
+      console.error(error);
       toast.error("Error deleting post");
     } finally {
       setIsDeleting(false);

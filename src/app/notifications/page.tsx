@@ -44,6 +44,7 @@ const Notifications = () => {
 
         if (unreadIds.length > 0) await markNotificationsAsRead(unreadIds);
       } catch (error) {
+        console.error(error);
         toast.error("Failed to fetch notifications");
       } finally {
         setIsLoading(false);
