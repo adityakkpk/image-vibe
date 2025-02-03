@@ -15,6 +15,7 @@ export async function getProfileByUsername(username: string) {
         name: true,
         bio: true,
         image: true,
+        website: true,
         createdAt: true,
         location: true,
         _count: {

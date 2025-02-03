@@ -19,8 +19,6 @@ function CreatePost() {
   const [showImageUpload, setShowImageUpload] = useState(false);
 
   const handleSubmit = async () => {
-    // console.log("submitting...");
-    // console.log(content)
 
     if(!content.trim() && !imageUrl) {
       return;
