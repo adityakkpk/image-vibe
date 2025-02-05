@@ -16,7 +16,7 @@ Image Vibe is a Next.js project designed to provide a seamless image viewing exp
 To get started with Image Vibe, clone the repository and install the dependencies:
 
 ```bash
-git clone https://github.com/yourusername/image-vibe.git
+git clone https://github.com/adityakkpk/image-vibe.git
 cd image-vibe
 npm install
 ```
@@ -46,7 +46,7 @@ npm start
 To Show the live preview follow the below link:
 
 ```
-
+https://image-vibe.vercel.app/
 ```
 
 ## Project Structure
@@ -77,11 +77,8 @@ The following scripts are available in the project:
 - `build`: Builds the project for production.
 - `start`: Starts the production server.
 - `lint`: Runs ESLint to check for linting errors.
+- `postinstall`: Generates prisma schema files
 
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request for any changes.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
