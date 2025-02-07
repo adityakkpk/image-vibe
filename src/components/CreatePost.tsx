@@ -6,10 +6,10 @@ import { Card, CardContent } from "./ui/card";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
-import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
+import { Loader2Icon, SendIcon } from "lucide-react";
 import { createPost } from "@/actions/post.action";
 import toast from "react-hot-toast";
-import ImageUpload from "./ImageUpload";
+// import ImageUpload from "./ImageUpload";
 
 function CreatePost() {
   const { user } = useUser();
@@ -17,7 +17,7 @@ function CreatePost() {
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isPosting, setIsPosting] = useState(false);
-  const [showImageUpload, setShowImageUpload] = useState(false);
+  // const [showImageUpload, setShowImageUpload] = useState(false);
 
   const handleSubmit = async () => {
 
@@ -31,7 +31,7 @@ function CreatePost() {
       if(res.success) {
         setContent("");
         setImageUrl("");
-        setShowImageUpload(false);
+        // setShowImageUpload(false);
 
         toast.success("Post created successfully")
       }
