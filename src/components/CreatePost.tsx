@@ -61,7 +61,7 @@ function CreatePost() {
           </div>
 
           {/* Handle Image Upload */}
-          {(showImageUpload || imageUrl) && (
+          {/* {(showImageUpload || imageUrl) && (
             <div className="border rounded-lg p-4">
               <ImageUpload
                 endpoint="postImage"
@@ -72,11 +72,11 @@ function CreatePost() {
                 }}
               />
             </div>
-          )}
+          )} */}
 
           <div className="flex items-center justify-between border-t pt-4">
             <div className="flex space-x-2">
-              <Button
+              {/* <Button
                 type="button"
                 variant="ghost"
                 size="sm"
@@ -86,7 +86,7 @@ function CreatePost() {
               >
                 <ImageIcon className="size-4 mr-2" />
                 Photo
-              </Button>
+              </Button> */}
             </div>
             <Button
               className="flex items-center"
