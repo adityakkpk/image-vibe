@@ -6,10 +6,10 @@ import { Card, CardContent } from "./ui/card";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
-import { Loader2Icon, SendIcon } from "lucide-react";
+import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
 import { createPost } from "@/actions/post.action";
 import toast from "react-hot-toast";
-// import ImageUpload from "./ImageUpload";
+import ImageUpload from "./ImageUpload";
 
 function CreatePost() {
   const { user } = useUser();
@@ -17,7 +17,7 @@ function CreatePost() {
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isPosting, setIsPosting] = useState(false);
-  // const [showImageUpload, setShowImageUpload] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState(false);
 
   const handleSubmit = async () => {
 
@@ -31,7 +31,7 @@ function CreatePost() {
       if(res.success) {
         setContent("");
         setImageUrl("");
-        // setShowImageUpload(false);
+        setShowImageUpload(false);
 
         toast.success("Post created successfully")
       }
@@ -61,22 +61,23 @@ function CreatePost() {
           </div>
 
           {/* Handle Image Upload */}
-          {/* {(showImageUpload || imageUrl) && (
+          {(showImageUpload || imageUrl) && (
             <div className="border rounded-lg p-4">
               <ImageUpload
-                endpoint="postImage"
-                value={imageUrl}
-                onChange={(url) => {
-                  setImageUrl(url);
-                  if (!url) setShowImageUpload(false);
-                }}
+                // endpoint="postImage"
+                // value={imageUrl}
+                // onChange={(url) => {
+                //   setImageUrl(url);
+                //   if (!url) setShowImageUpload(false);
+                // }}
+                setImageUrl={setImageUrl}
               />
             </div>
-          )} */}
+          )}
 
           <div className="flex items-center justify-between border-t pt-4">
             <div className="flex space-x-2">
-              {/* <Button
+              <Button
                 type="button"
                 variant="ghost"
                 size="sm"
@@ -86,7 +87,7 @@ function CreatePost() {
               >
                 <ImageIcon className="size-4 mr-2" />
                 Photo
-              </Button> */}
+              </Button>
             </div>
             <Button
               className="flex items-center"
