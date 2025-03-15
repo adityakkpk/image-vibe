@@ -7,7 +7,7 @@ interface ImageUploadProps {
   // endpoint: "postImage";
   // onChange: (url: string) => void;
   // value: string;
-  setImageUrl: (file: any) => void;
+  setImageUrl: (url: string) => void;
 }
 
 // function ImageUpload({ endpoint, onChange, value }: ImageUploadProps) {
@@ -43,12 +43,22 @@ import React, { useState, useRef } from "react";
 import { CloudUpload } from "lucide-react";
 import toast from "react-hot-toast";
 
+interface DragEvent extends React.DragEvent<HTMLDivElement> {
+  type: 'dragenter' | 'dragover' | 'dragleave' | 'drop';
+}
+
+interface FileInputEvent extends React.ChangeEvent<HTMLInputElement> {
+  target: HTMLInputElement & {
+    files: FileList;
+  };
+}
+
 const ImageUpload = ({ setImageUrl }: ImageUploadProps) => {
   const [dragActive, setDragActive] = useState(false);
-  const [file, setFile] = useState<any>(null);
-  const inputRef = useRef<any | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleDrag = (e: any) => {
+  const handleDrag = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -59,7 +69,7 @@ const ImageUpload = ({ setImageUrl }: ImageUploadProps) => {
     }
   };
 
-  const handleDrop = (e: any) => {
+  const handleDrop = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
@@ -69,7 +79,7 @@ const ImageUpload = ({ setImageUrl }: ImageUploadProps) => {
     }
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: FileInputEvent) => {
     e.preventDefault();
 
     const selectedFile = e.target.files[0];
@@ -96,7 +106,7 @@ const ImageUpload = ({ setImageUrl }: ImageUploadProps) => {
     }
   };
 
-  const handleFile = async (file: any) => {
+  const handleFile = async (file: File) => {
     setFile(file);
     // You would typically upload the file here
     console.log("File selected:", file.name);
@@ -116,14 +126,16 @@ const ImageUpload = ({ setImageUrl }: ImageUploadProps) => {
         console.log(data);
         toast.success("Image uploaded successfully");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error submitting nomination:", error);
-      toast.error("Failed to submit nomination: ", error.message);
+      toast.error("Failed to submit nomination: " + (error instanceof Error ? error.message : "Unknown error"));
     }
   };
 
   const handleButtonClick = () => {
-    inputRef.current.click();
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
   };
 
   return (
